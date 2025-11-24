@@ -1,284 +1,568 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vật Lý Hà Đông - Thầy Lê Văn Hải</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Thêm Font Awesome cho icon -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <!-- Font chữ Google (Roboto) -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - E-Learning</title>
+    <!-- Import Font Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Import FontAwesome cho Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-color: #1d2231; /* Màu sidebar */
+            --color-dark: #1D2231;
+            --text-grey: #8390A2;
+            --highlight: #3498db; /* Màu xanh chủ đạo */
+            --bg-color: #f1f5f9;
+            --white: #fff;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            list-style-type: none;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 260px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: var(--main-color);
+            z-index: 100;
+            transition: width 300ms;
+        }
+
+        .sidebar .brand {
+            height: 90px;
+            padding: 1rem 0rem 1rem 2rem;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar .brand i {
+            font-size: 1.8rem;
+            margin-right: 1rem;
+        }
+
+        .sidebar .menu {
+            margin-top: 1rem;
+        }
+
+        .sidebar .menu li {
+            width: 100%;
+            margin-bottom: 1.3rem;
+            padding-left: 1rem;
+        }
+
+        .sidebar .menu a {
+            padding-left: 1rem;
+            display: block;
+            color: var(--white);
+            font-size: 1rem;
+        }
+
+        .sidebar .menu a.active,
+        .sidebar .menu a:hover {
+            background: var(--white);
+            padding-top: 0.8rem;
+            padding-bottom: 0.8rem;
+            color: var(--main-color);
+            border-radius: 30px 0px 0px 30px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .menu a i {
+            font-size: 1.2rem;
+            padding-right: 1rem;
+        }
+
+        .sidebar .logout {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            margin-left: 260px;
+            transition: margin-left 300ms;
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .header-title {
+            display: flex;
+            align-items: center;
+        }
+
+        header .header-title label {
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        header .search-wrapper {
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            overflow-x: hidden;
+            width: 350px;
+        }
+
+        header .search-wrapper i {
+            display: inline-block;
+            padding: 0rem 1rem;
+            color: var(--text-grey);
+        }
+
+        header .search-wrapper input {
+            height: 100%;
+            width: 100%;
+            padding: .5rem;
+            border: none;
+            outline: none;
+        }
+
+        header .user-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        header .user-wrapper img {
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+
+        header .user-wrapper small {
+            display: inline-block;
+            color: var(--text-grey);
+        }
+
+        /* Main Body */
+        main {
+            padding: 2rem 1.5rem;
+            background: var(--bg-color);
+            min-height: calc(100vh - 90px);
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-single {
+            display: flex;
+            justify-content: space-between;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .card-single:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-single div:first-child span {
+            color: var(--text-grey);
+        }
+
+        .card-single div:last-child i {
+            font-size: 3rem;
+            color: var(--highlight);
+        }
+
+        /* Tables & Grids */
+        .recent-grid {
+            display: grid;
+            grid-template-columns: 65% auto;
+            grid-gap: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header button {
+            background: var(--highlight);
+            border-radius: 10px;
+            color: var(--white);
+            font-size: .8rem;
+            padding: .5rem 1rem;
+            border: 1px solid var(--highlight);
+            cursor: pointer;
+        }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        /* Table Styling */
+        table {
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        thead td {
+            font-weight: 700;
+        }
+
+        td {
+            padding: .5rem 1rem;
+            font-size: .9rem;
+            color: #222;
+        }
+
+        td .status {
+            display: inline-block;
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .status.green { background: #2ecc71; }
+        .status.purple { background: #9b59b6; }
+        .status.red { background: #e74c3c; }
+
+        tr td:last-child {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Customer List */
+        .customer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: .5rem 0.7rem;
+        }
+
+        .customer .info {
+            display: flex;
+            align-items: center;
+        }
+
+        .customer .info img {
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+
+        .customer h4 {
+            font-size: .9rem;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .customer small {
+            font-weight: 600;
+            color: var(--text-grey);
+        }
+
+        .customer .contact i {
+            font-size: 1.2rem;
+            display: inline-block;
+            margin-left: .5rem;
+            color: var(--highlight);
+        }
+
+        /* Responsive */
+        @media only screen and (max-width: 1200px) {
+            .sidebar { width: 70px; }
+            .sidebar .brand h2,
+            .sidebar .menu a span { display: none; }
+            .sidebar .brand { padding-left: 1rem; }
+            .sidebar .menu li { padding-left: 0; text-align: center; }
+            .sidebar .menu a { padding-left: 0; }
+            .sidebar .menu a:hover { padding-left: 0; border-radius: 0;}
+
+            .main-content { margin-left: 70px; }
+            .cards { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media only screen and (max-width: 960px) {
+            .cards { grid-template-columns: repeat(2, 1fr); }
+            .recent-grid { grid-template-columns: 100%; }
+        }
+
+        @media only screen and (max-width: 768px) {
+            .cards { grid-template-columns: 100%; }
+            header .search-wrapper { display: none; }
+            .sidebar { left: -100% !important; }
+            header h3 { display: flex; align-items: center; font-size: 1.1rem; }
+            header h3 label { display: inline-block; background: var(--highlight); padding-left: 0rem; margin-right: 1rem; height: 40px; width: 40px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center;}
+            header .header-title label { display: inline-block; }
+            .main-content { width: 100%; margin-left: 0rem; }
+        }
+    </style>
+
 </head>
 <body>
 
-<!-- TOP BAR: Thông tin liên hệ & Đăng nhập -->
-<div class="top-bar">
-  <div class="container">
-    <div class="top-left">
-      <span><i class="fas fa-phone-alt"></i> 0987.654.321</span>
-      <span><i class="fas fa-envelope"></i> adlevanhai@gmail.com</span>
+<!-- Sidebar (Thanh bên trái) -->
+<div class="sidebar">
+    <div class="brand">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <h2>EduAdmin</h2>
     </div>
-    <div class="top-right">
-      <a href="#">Kích hoạt khóa học</a>
-      <a href="#">Đăng ký</a>
-      <a href="#">Đăng nhập</a>
-    </div>
-  </div>
+    <ul class="menu">
+        <li class="active">
+            <a href="#"><i class="fa-solid fa-house"></i> <span>Tổng quan</span></a>
+        </li>
+        <li>
+            <a href="#"><i class="fa-solid fa-book-open"></i> <span>Quản lý Khóa học</span></a>
+        </li>
+        <li>
+            <a href="#"><i class="fa-solid fa-users"></i> <span>Học viên</span></a>
+        </li>
+        <li>
+            <a href="#"><i class="fa-solid fa-chalkboard-user"></i> <span>Giảng viên</span></a>
+        </li>
+        <li>
+            <a href="#"><i class="fa-solid fa-wallet"></i> <span>Doanh thu</span></a>
+        </li>
+        <li>
+            <a href="#"><i class="fa-solid fa-comment-dots"></i> <span>Đánh giá & Hỏi đáp</span></a>
+        </li>
+        <li>
+            <a href="#"><i class="fa-solid fa-gear"></i> <span>Cài đặt</span></a>
+        </li>
+        <li class="logout">
+            <a href="#"><i class="fa-solid fa-right-from-bracket"></i> <span>Đăng xuất</span></a>
+        </li>
+    </ul>
 </div>
 
-<!-- HEADER: Logo & Menu chính -->
-<header class="main-header">
-  <div class="container header-content">
-    <div class="logo">
-      <a href="#">
-        <h1>VATLYHADONG<span>.VN</span></h1>
-        <p>Khóa có tất cả mọi thứ về môn Lý</p>
-      </a>
-    </div>
+<!-- Main Content (Nội dung chính) -->
+<div class="main-content">
 
-    <nav class="navbar">
-      <ul>
-        <li><a href="#" class="active">Trang chủ</a></li>
-        <li><a href="#">Khóa học Online</a></li>
-        <li><a href="#">Sách tham khảo</a></li>
-        <li><a href="#">Tài liệu VIP</a></li>
-        <li><a href="#">Tin tức</a></li>
-      </ul>
-    </nav>
+    <!-- Header -->
+    <header>
+        <div class="header-title">
+            <label for="">
+                <i class="fa-solid fa-bars"></i>
+            </label>
+            <h3>Dashboard</h3>
+        </div>
 
-    <div class="header-actions">
-      <div class="search-box">
-        <input type="text" placeholder="Tìm khóa học...">
-        <button><i class="fas fa-search"></i></button>
-      </div>
-      <div class="cart-icon">
-        <a href="#"><i class="fas fa-shopping-cart"></i> <span>0</span></a>
-      </div>
-    </div>
+        <div class="search-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" placeholder="Tìm kiếm khóa học, học viên...">
+        </div>
 
-    <!-- Mobile Menu Button -->
-    <div class="mobile-menu-btn">
-      <i class="fas fa-bars"></i>
-    </div>
-  </div>
-</header>
+        <div class="user-wrapper">
+            <img src="https://ui-avatars.com/api/?name=Admin+User&background=random" alt="Admin" width="40px" height="40px">
+            <div>
+                <h4>Nguyễn Văn Admin</h4>
+                <small>Quản trị viên cao cấp</small>
+            </div>
+        </div>
+    </header>
 
-<!-- HERO BANNER -->
-<section class="hero-banner">
-  <div class="container hero-content">
-    <h2>LỚP HỌC VẬT LÝ HÀ ĐÔNG</h2>
-    <p>Chinh phục điểm 9+ môn Vật Lý cùng Thầy Lê Văn Hải</p>
-    <div class="hero-btns">
-      <a href="#courses" class="btn btn-primary">Xem khóa học</a>
-      <a href="#books" class="btn btn-outline">Sách tham khảo</a>
-    </div>
-  </div>
-</section>
+    <!-- Cards Thống kê -->
+    <main>
+        <div class="cards">
+            <div class="card-single">
+                <div>
+                    <h1>1,245</h1>
+                    <span>Học viên mới</span>
+                </div>
+                <div>
+                    <i class="fa-solid fa-users"></i>
+                </div>
+            </div>
 
-<!-- FEATURE SECTION -->
-<section class="features">
-  <div class="container feature-grid">
-    <div class="feature-item">
-      <i class="fas fa-video"></i>
-      <h3>Học mọi lúc mọi nơi</h3>
-      <p>Video bài giảng chất lượng cao, xem lại không giới hạn.</p>
-    </div>
-    <div class="feature-item">
-      <i class="fas fa-book-open"></i>
-      <h3>Tài liệu độc quyền</h3>
-      <p>Kho đề thi, tài liệu PDF cập nhật liên tục bám sát đề thi.</p>
-    </div>
-    <div class="feature-item">
-      <i class="fas fa-user-graduate"></i>
-      <h3>Hỗ trợ tận tình</h3>
-      <p>Đội ngũ trợ giảng và thầy Hải giải đáp thắc mắc 24/7.</p>
-    </div>
-  </div>
-</section>
+            <div class="card-single">
+                <div>
+                    <h1>54</h1>
+                    <span>Khóa học Active</span>
+                </div>
+                <div>
+                    <i class="fa-solid fa-book"></i>
+                </div>
+            </div>
 
-<!-- KHÓA HỌC NỔI BẬT -->
-<section id="courses" class="section-padding">
-  <div class="container">
-    <div class="section-title">
-      <h2>KHÓA HỌC ONLINE</h2>
-      <div class="divider"></div>
-    </div>
+            <div class="card-single">
+                <div>
+                    <h1>28</h1>
+                    <span>Giảng viên</span>
+                </div>
+                <div>
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                </div>
+            </div>
 
-    <div class="product-grid">
-      <!-- Product 1 -->
-      <div class="product-card">
-        <div class="product-img">
-          <!-- Ảnh placeholder -->
-          <div class="img-placeholder">Lý 12</div>
-          <span class="badge">Hot</span>
+            <div class="card-single">
+                <div>
+                    <h1>$25k</h1>
+                    <span>Doanh thu tháng</span>
+                </div>
+                <div>
+                    <i class="fa-solid fa-sack-dollar"></i>
+                </div>
+            </div>
         </div>
-        <div class="product-info">
-          <h3><a href="#">Khóa Luyện Thi THPTQG 2025 - Vật Lý 12</a></h3>
-          <p class="author">GV: Lê Văn Hải</p>
-          <div class="price-box">
-            <span class="current-price">1.200.000đ</span>
-            <span class="old-price">2.500.000đ</span>
-          </div>
-          <button class="btn-cart">Đăng ký ngay</button>
-        </div>
-      </div>
 
-      <!-- Product 2 -->
-      <div class="product-card">
-        <div class="product-img">
-          <div class="img-placeholder" style="background-color: #2ecc71;">Lý 11</div>
-        </div>
-        <div class="product-info">
-          <h3><a href="#">Khóa Vật Lý 11 - Nền tảng vững chắc</a></h3>
-          <p class="author">GV: Lê Văn Hải</p>
-          <div class="price-box">
-            <span class="current-price">800.000đ</span>
-            <span class="old-price">1.500.000đ</span>
-          </div>
-          <button class="btn-cart">Đăng ký ngay</button>
-        </div>
-      </div>
+        <!-- Bảng dữ liệu -->
+        <div class="recent-grid">
+            <div class="projects">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Khóa học mới nhất</h3>
+                        <button>Xem tất cả <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table width="100%">
+                                <thead>
+                                <tr>
+                                    <td>Tên khóa học</td>
+                                    <td>Giảng viên</td>
+                                    <td>Trạng thái</td>
+                                    <td>Học viên</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Lập trình Web Fullstack</td>
+                                    <td>Trần Văn A</td>
+                                    <td><span class="status green"></span> Đang chạy</td>
+                                    <td>120</td>
+                                </tr>
+                                <tr>
+                                    <td>Thiết kế UI/UX Cơ bản</td>
+                                    <td>Lê Thị B</td>
+                                    <td><span class="status purple"></span> Sắp ra mắt</td>
+                                    <td>45</td>
+                                </tr>
+                                <tr>
+                                    <td>Python cho người mới</td>
+                                    <td>Nguyễn Văn C</td>
+                                    <td><span class="status green"></span> Đang chạy</td>
+                                    <td>310</td>
+                                </tr>
+                                <tr>
+                                    <td>Marketing Online</td>
+                                    <td>Phạm D</td>
+                                    <td><span class="status red"></span> Tạm dừng</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>ReactJS Nâng cao</td>
+                                    <td>Trần Văn A</td>
+                                    <td><span class="status green"></span> Đang chạy</td>
+                                    <td>85</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      <!-- Product 3 -->
-      <div class="product-card">
-        <div class="product-img">
-          <div class="img-placeholder" style="background-color: #e74c3c;">Luyện Đề</div>
-        </div>
-        <div class="product-info">
-          <h3><a href="#">Khóa Luyện Đề Thực Chiến 2025</a></h3>
-          <p class="author">GV: Lê Văn Hải</p>
-          <div class="price-box">
-            <span class="current-price">600.000đ</span>
-            <span class="old-price">1.200.000đ</span>
-          </div>
-          <button class="btn-cart">Đăng ký ngay</button>
-        </div>
-      </div>
+            <div class="customers">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Học viên đăng ký mới</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="customer">
+                            <div class="info">
+                                <img src="https://ui-avatars.com/api/?name=User+1&background=0D8ABC&color=fff" width="40px" height="40px" alt="">
+                                <div>
+                                    <h4>Lê Hoàng Nam</h4>
+                                    <small>Front-end Dev</small>
+                                </div>
+                            </div>
+                            <div class="contact">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+                        </div>
 
-      <!-- Product 4 -->
-      <div class="product-card">
-        <div class="product-img">
-          <div class="img-placeholder" style="background-color: #9b59b6;">Combo</div>
-        </div>
-        <div class="product-info">
-          <h3><a href="#">Combo Xuất Phát Sớm Lý 10 + 11</a></h3>
-          <p class="author">GV: Lê Văn Hải</p>
-          <div class="price-box">
-            <span class="current-price">1.500.000đ</span>
-            <span class="old-price">3.000.000đ</span>
-          </div>
-          <button class="btn-cart">Đăng ký ngay</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+                        <div class="customer">
+                            <div class="info">
+                                <img src="https://ui-avatars.com/api/?name=User+2&background=E91E63&color=fff" width="40px" height="40px" alt="">
+                                <div>
+                                    <h4>Phạm Minh Thư</h4>
+                                    <small>Design UI</small>
+                                </div>
+                            </div>
+                            <div class="contact">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+                        </div>
 
-<!-- SÁCH THAM KHẢO -->
-<section id="books" class="section-padding bg-light">
-  <div class="container">
-    <div class="section-title">
-      <h2>SÁCH THAM KHẢO</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="product-grid">
-      <!-- Book 1 -->
-      <div class="product-card">
-        <div class="product-img">
-          <div class="img-placeholder book-cover">SÁCH</div>
+                        <div class="customer">
+                            <div class="info">
+                                <img src="https://ui-avatars.com/api/?name=User+3&background=4CAF50&color=fff" width="40px" height="40px" alt="">
+                                <div>
+                                    <h4>Ngô Bá Khá</h4>
+                                    <small>Python Basic</small>
+                                </div>
+                            </div>
+                            <div class="contact">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+                        </div>
+                        <div class="customer">
+                            <div class="info">
+                                <img src="https://ui-avatars.com/api/?name=User+4&background=FFC107&color=fff" width="40px" height="40px" alt="">
+                                <div>
+                                    <h4>Trần Thanh Tâm</h4>
+                                    <small>Marketing</small>
+                                </div>
+                            </div>
+                            <div class="contact">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="product-info">
-          <h3><a href="#">Sổ tay công thức Vật Lý 10-11-12</a></h3>
-          <div class="price-box">
-            <span class="current-price">150.000đ</span>
-          </div>
-          <button class="btn-cart"><i class="fas fa-cart-plus"></i> Thêm vào giỏ</button>
-        </div>
-      </div>
-      <!-- Book 2 -->
-      <div class="product-card">
-        <div class="product-img">
-          <div class="img-placeholder book-cover">SÁCH</div>
-        </div>
-        <div class="product-info">
-          <h3><a href="#">Tuyển tập 50 đề thi thử hay nhất</a></h3>
-          <div class="price-box">
-            <span class="current-price">200.000đ</span>
-          </div>
-          <button class="btn-cart"><i class="fas fa-cart-plus"></i> Thêm vào giỏ</button>
-        </div>
-      </div>
-      <!-- Book 3 -->
-      <div class="product-card">
-        <div class="product-img">
-          <div class="img-placeholder book-cover">SÁCH</div>
-        </div>
-        <div class="product-info">
-          <h3><a href="#">Bộ đề bứt phá điểm 9+</a></h3>
-          <div class="price-box">
-            <span class="current-price">180.000đ</span>
-          </div>
-          <button class="btn-cart"><i class="fas fa-cart-plus"></i> Thêm vào giỏ</button>
-        </div>
-      </div>
-      <!-- Book 4 -->
-      <div class="product-card">
-        <div class="product-img">
-          <div class="img-placeholder book-cover">SÁCH</div>
-        </div>
-        <div class="product-info">
-          <h3><a href="#">Giải chi tiết bài tập khó</a></h3>
-          <div class="price-box">
-            <span class="current-price">120.000đ</span>
-          </div>
-          <button class="btn-cart"><i class="fas fa-cart-plus"></i> Thêm vào giỏ</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="container footer-content">
-    <div class="footer-col">
-      <h3>Vật Lý Hà Đông</h3>
-      <p>Hệ thống học tập trực tuyến môn Vật Lý hàng đầu.</p>
-      <ul class="contact-info">
-        <li><i class="fas fa-map-marker-alt"></i> Hà Đông, Hà Nội</li>
-        <li><i class="fas fa-envelope"></i> adlevanhai@gmail.com</li>
-        <li><i class="fas fa-user"></i> Chịu trách nhiệm nội dung: Lê Văn Hải</li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h3>Thông tin</h3>
-      <ul>
-        <li><a href="#">Giới thiệu</a></li>
-        <li><a href="#">Câu hỏi thường gặp</a></li>
-        <li><a href="#">Điều khoản dịch vụ</a></li>
-        <li><a href="#">Chính sách bảo mật</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h3>Hỗ trợ học viên</h3>
-      <ul>
-        <li><a href="#">Hướng dẫn thanh toán</a></li>
-        <li><a href="#">Kích hoạt khóa học</a></li>
-        <li><a href="#">Đăng ký làm cộng tác viên</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h3>Kết nối</h3>
-      <div class="social-links">
-        <a href="#" class="fb"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="yt"><i class="fab fa-youtube"></i></a>
-        <a href="#" class="tiktok"><i class="fab fa-tiktok"></i></a>
-      </div>
-      <p class="copyright">© Bản quyền thuộc về Vatlyhadong.vn</p>
-    </div>
-  </div>
-</footer>
-
+    </main>
+</div>
 </body>
 </html>
